@@ -18,6 +18,19 @@ You may also see any lint errors in the console.
 cd backend/
 node index.js
 ```
+
+## Error Message Solutions
+
+## Error: Module not found: Error: Can't resolve 'axios'
+Solution: In the project root directory:
+npm install axios
+## Error: react-scripts is not recognized as an internal or external command, operable or batch file
+Solution: In the project root directory:
+npm install react-scripts --save
+## Error: "cannot find module node-cron' "
+Solution: in directory 'Ephemere/backend/'
+npm install node-cron
+
 ## Additional Create-React-App Commands
 
 ### `npm test`

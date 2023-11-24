@@ -1,4 +1,6 @@
+// controllers/user-ctrls.js
 const User = require('../models/user-model')
+const Message = require('../models/message-model');
 
 const createUser = async (req, res) => {
     try {
