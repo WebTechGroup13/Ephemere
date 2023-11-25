@@ -128,20 +128,28 @@ function App() {
                     <button type="submit">Send</button>
                 </div>
             </form>
-    
+
+            <hr></hr>    
             {/** Render messages to display on the landing page */}
-            <div className="messages" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <h2>Messages</h2>
-                <div style={{ width: '50%', maxWidth: '600px' }}>
+            <div class="letters-container">
+
+            <div className="letters-section">
+        
+                <div>
                     {messages.map((message, index) => (
-                        <div key={index} style={{ border: '1px solid #ccc', padding: '10px', marginBottom: '10px' }}>
-                            <p><strong>To:</strong> {message.to}</p>
-                            {message.from && <p><strong>From:</strong> {message.from}</p>}
-                            <p><strong>Text:</strong> {message.text}</p>
+                        <div className="letter">
+                            
+                            <p className="letter-opening">Dear, {message.to}</p>
+
+                            <p className="letter-body">{message.text}</p>
+                    
+                            <p className="letter-closing">From, {message.from}</p>
+
                             {/* Other message fields can be displayed similarly */}
                         </div>
                     ))}
                 </div>
+            </div>
             </div>
 
             {deletedMessageCount > 0 && (
