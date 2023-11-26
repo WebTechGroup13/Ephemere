@@ -11,6 +11,7 @@ function Home (){
     const [text, setText] = useState("");
     const [from, setFrom] = useState("");
     const [to, setTo] = useState("");
+    const [searchQuery, setSearchQuery] = useState("");
     const [messages, setMessages] = useState([]);
     
     
@@ -79,6 +80,15 @@ function Home (){
         
     }; // end of handleDeleteMessage
 
+    const filteredMessages = messages.filter((message) => {
+        const searchText = searchQuery.toLowerCase();
+        return (
+          message.text.toLowerCase().includes(searchText) ||
+          message.from.toLowerCase().includes(searchText) ||
+          message.to.toLowerCase().includes(searchText)
+        );
+      });
+
     
 
 return (
@@ -121,13 +131,24 @@ return (
             </form>
     
             <hr></hr>
+
+            <input
+            className='searchbar'
+            type="text"
+            placeholder="Search Letters"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            />
+
+
+        
         <div className='letters-container'>
             {/** Display Messages */}
             <div className="letters-section">
                 
-                {messages.map((message, index) => (
+                {filteredMessages.map((message, index) => (
                         
-                    <div className="letter">
+                    <div className="letter" key={index}>
 
                         <p className="letter-opening">Dear, {message.to}</p>
 
