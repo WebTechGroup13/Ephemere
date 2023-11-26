@@ -18,21 +18,31 @@ const validateAdminCredentials = (email, password) => {
 // Inside a setup or initialization function
 const setupAdmin = async () => {
 try {
+
+
+
     const adminExists = await User.findOne({ email: adminEmail });
 
-    if (!adminExists) {
-        const hashedAdminPassword = await bcrypt.hash(adminPassword, saltRounds);
-        const adminUser = new User({
-            email: adminEmail,
-            password: hashedAdminPassword,
-            role: 'admin'
-        });
+if (!adminExists) {
+    const hashedAdminPassword = await bcrypt.hash(adminPassword, saltRounds);
+    const adminUser = new User({
+        email: adminEmail,
+        password: hashedAdminPassword,
+        role: 'admin'
+    });
 
-        await adminUser.save();
-        console.log('Admin user created successfully.', { email, password, role });
-    } else {
-        console.log('Admin user already exists.');
-    }
+    await adminUser.save();
+    console.log('Admin user created successfully.', {
+        email: adminEmail,
+        password: adminPassword,
+        role: 'admin'
+    });
+} else {
+    console.log('Admin user already exists.');
+}
+
+
+
 } catch (error) {
     console.error('Error creating admin user:', error);
 }

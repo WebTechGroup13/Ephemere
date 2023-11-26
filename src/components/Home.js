@@ -13,6 +13,7 @@ function Home (){
     const [to, setTo] = useState("");
     const [messages, setMessages] = useState([]);
     
+    
     // Send a message
     const handleSendMessage = async (e) => {
         e.preventDefault();
@@ -52,9 +53,9 @@ function Home (){
     }; // end of fetchMessages()
 
     useEffect(() => {
-        // const interval = setInterval(() =>{
+        const interval = setInterval(() =>{
             fetchMessages();
-        // }, 10000); //Fetch messages every 10 seconds
+        }, 5000); //Fetch messages every 10 seconds
 
         // return () => clearInterval(interval);
     },[]); // The empty dependency array ensures that this effect runs only once, similar to componentDidMount
@@ -66,7 +67,6 @@ function Home (){
             
             // Check the response for success or handle as needed
             console.log('Message deleted:', response.data);
-            
             // Update the messages state to remove the deleted message from the UI
             setMessages(messages.filter(message => message._id !== messageId));
             
@@ -75,12 +75,16 @@ function Home (){
             console.error('Error deleting message:', error);
             alert('Failed to delete message. Please try again.');
         }
+
+        
     }; // end of handleDeleteMessage
+
+    
 
 return (
     <div className="homepage">
 
-        <h1>Hello {location.state.id} and welcome to the home</h1>
+        <a>{location.state.id} </a>
         
             {/* Image for landing page */}
             <img className="logo" src="ephemere.svg" alt="Ephemere Logo"></img>
@@ -116,24 +120,29 @@ return (
                 </div>
             </form>
     
+            <hr></hr>
+        <div className='letters-container'>
             {/** Display Messages */}
-            <div className="messages" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <h2>Messages</h2>
-                <div style={{ width: '50%', maxWidth: '600px' }}>
-                    {messages.map((message, index) => (
-                        <div key={index} style={{ border: '1px solid #ccc', padding: '10px', marginBottom: '10px' }}>
-                            <p><strong>To:</strong> {message.to}</p>
-                            {message.from && <p><strong>From:</strong> {message.from}</p>}
-                            <p><strong>Text:</strong> {message.text}</p>
-                            {/* Show delete button only if user is an admin */}
-                            {location.state.role === 'admin' && (
-                                <button onClick={() => handleDeleteMessage(message._id)}>Delete</button>
-                            )}
-                        </div>
-                    ))}
-                </div>
-            </div>
+            <div className="letters-section">
+                
+                {messages.map((message, index) => (
+                        
+                    <div className="letter">
 
+                        <p className="letter-opening">Dear, {message.to}</p>
+
+                        <p className="letter-body">{message.text}</p>
+
+                        <p className="letter-closing">From, {message.from}</p>                        
+
+                        {location.state.id === 'admin@admin' && (
+                            <button onClick={() => handleDeleteMessage(message._id)}>Delete</button>
+                        )}
+                     </div>
+                ))}
+                
+            </div>
+        </div>
     </div>
 )
 }
