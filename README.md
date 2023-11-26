@@ -30,6 +30,9 @@ npm install react-scripts --save
 ## Error: "cannot find module node-cron' "
 Solution: in directory 'Ephemere/backend/'
 npm install node-cron
+## Error: "cannot find module 'bcryptjs' "
+Solution: in root directory
+npm install bcryptjs
 
 ## Additional Create-React-App Commands
 

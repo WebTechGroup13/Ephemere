@@ -7,33 +7,26 @@ const app = express();
 const port = process.env.SERVER_PORT || 5000;
 
 //Connect to db
-const db = require('./db');
-
+const db = require('./db/mongo.js');
+const { setupAdmin } = require('./controllers/setup-admin');
+const { User } = require('./models/user-model');
 const { deleteOldMessages} = require('./controllers/message-ctrl');
+
 const cleanUpInterval = '* * * * *'; // Runs every minute (* - minute(0-59) * - Hour(0-23) * - Day(1-31) * - Month(1-12) * -Day of the week 0-7 (sunday = 0) * - Year (optional))
 
 app.use(express.json()); // Parse JSON payloads
-
-const userRouter = require('./routes/user-router');
-const messageRouter = require('./routes/message-router');
-
+app.use(express.urlencoded({ extended: true }))
 app.use(cors({
     origin: 'http://localhost:3000',
     credentials: true, // If your requests need credentials (cookies, authorization headers, etc.)
   }));
 
-// Add Access Control Allow Origin headers
-app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.header(
-      "Access-Control-Allow-Headers",
-      "Origin, X-Requested-With, Content-Type, Accept"
-    );
-    next();
-  });
+const userRouter = require('./routes/user-router');
+const messageRouter = require('./routes/message-router');
 
-app.use('/users', userRouter);
+app.use('/user', userRouter);
 app.use('/', messageRouter);
+app.use('/api/messages', messageRouter);
 
 app.get("/", (req, resp) => {
  
@@ -44,11 +37,58 @@ app.get("/", (req, resp) => {
     // If you see App is working means
     // backend working properly
 });
- 
-// Use cors middleware for a specific route
-app.post('http://localhost:5000', cors(), (req, res) => {
-    // Your route logic
-});
+
+app.post("/login", async ( req, res) =>{
+    const{ email, password } = req.body
+    // Validate if all necessary fields are present
+    if (!email || !password) {
+        return res.status(400).json({ message: 'email and password are required.' });
+    }
+    try{
+        const loginUser = await User.findOne({ email})
+        if(loginUser){
+            console.log('User logged in successfully:', loginUser);
+            res.json("exist")
+        }
+        else{
+            res.json("notexist")
+        }
+    }
+    catch(e){
+        // res.json("fail")
+        console.error('Error in login:', e);
+        return res.status(500).json({ message: 'Internal server error on Login' });
+    }
+})
+
+app.post("/signup",async(req,res)=>{
+    const{email,password}=req.body
+
+    // Validate if all necessary fields are present
+    if (!email || !password) {
+        return res.status(400).json({ message: 'email and password are required.' });
+    }
+    try{
+        const existingUser = await User.findOne({email})
+        if(existingUser){
+            return res.json("exist");       
+        }
+        else{
+            const newUser = new User({ email, password, role: 'user' });
+            await newUser.save();
+            console.log('User registered successfully:', newUser);
+            return res.json("notexist");
+        }
+    }
+    catch(e){
+        res.json("fail")
+        console.error('Error in signup:', e);
+        return res.status(500).json({ message: 'Internal server error on Signup' });
+    }
+})
+
+// Initialize admin setup during server startup
+setupAdmin();
 
 // Schedule a task to run deleteOldMessages every minute (for demonstration purposes)
 cron.schedule(cleanUpInterval, async () => {
@@ -64,4 +104,4 @@ app.listen(5000, () => {
     console.log('App listen at port 5000');
 });
 
-    module.exports = app;
+module.exports = app;

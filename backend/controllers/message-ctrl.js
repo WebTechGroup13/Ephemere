@@ -59,7 +59,7 @@ const getAllMessages = async (req, res) => {
   };
 
 // Function to delete old messages
-const deleteOldMessages = async () => {
+const deleteOldMessages = async (res) => {
     try {
         const currentTime = new Date();
         const oldMessages = await Message.find({ /* your criteria to find old messages */ });
@@ -72,13 +72,26 @@ const deleteOldMessages = async () => {
             await message.deleteOne(); // Delete the message
         });
 
-        const deletedCount = oldMessages.length; // Get the count of deleted messages
-
-        res.status(200).json({ message: 'Messages deleted due to expiry' });
-        console.log(`Old messages deleted. Count: ${deletedCount}`);
     } catch (error) {
         console.error('Error deleting old messages:', error);
     }
+};
+
+const deleteMessageById = async (req, res) => {
+    const { id } = req.params;
+  
+    try {
+        // Find and delete the message by its _id
+        const deletedMessage = await Message.findByIdAndDelete(id);
+    
+        if (!deletedMessage) {
+          return res.status(404).json({ message: 'Message not found' });
+        }
+    
+        res.status(200).json({ message: 'Message deleted successfully' });
+      } catch (error) {
+        res.status(500).json({ message: 'Error deleting message', error });
+      }
 };
 
 // If needed, stop the interval after some time or when the app shuts down
@@ -93,4 +106,5 @@ module.exports = {
     getMessage,
     getAllMessages,
     deleteOldMessages,
+    deleteMessageById
 }
