@@ -4,6 +4,7 @@ const express = require('express');
 const cors = require("cors");
 const cron = require('node-cron');
 const app = express();
+const multer = require("multer");
 const port = process.env.SERVER_PORT || 5000;
 
 //Connect to db
@@ -24,6 +25,18 @@ app.use(cors({
 const userRouter = require('./routes/user-router');
 const messageRouter = require('./routes/message-router');
 
+const storageEngine = multer.diskStorage({
+    destination: "../public/images",
+    filename: (req, file, cb) => {
+      cb(null, `${Date.now()}--${file.originalname}`);
+    },
+  });
+
+  const upload = multer({
+    storage: storageEngine,
+    limits: { fileSize: 1000000 },
+  });
+
 app.use('/user', userRouter);
 app.use('/', messageRouter);
 app.use('/api/messages', messageRouter);
@@ -37,6 +50,15 @@ app.get("/", (req, resp) => {
     // If you see App is working means
     // backend working properly
 });
+
+app.post("/single", upload.single("file"), (req, res) => {
+    if (req.file) {
+      const fileDirectory = `images/${req.file.filename}`;
+      res.json({ fileDirectory, message: "Single file uploaded successfully" });
+    } else {
+      res.status(400).send("Please upload a valid image");
+    }
+  });
 
 app.post("/login", async ( req, res) =>{
     const{ email, password } = req.body

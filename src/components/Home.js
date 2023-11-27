@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {useLocation, useNavigate} from 'react-router-dom';
+import '../Home.css'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function Home (){
@@ -11,31 +12,47 @@ function Home (){
     const [text, setText] = useState("");
     const [from, setFrom] = useState("");
     const [to, setTo] = useState("");
+    const [file, setFile] = useState()
+    const [fdirect, setDirectory] = useState('')
+
     const [searchQuery, setSearchQuery] = useState("");
     const [messages, setMessages] = useState([]);
     
     
-    // Send a message
+
+
     const handleSendMessage = async (e) => {
         e.preventDefault();
-    
+
         try {
-            const response = await axios.post('http://localhost:5000/api/messages', {
+          const formData = new FormData();
+          formData.append('file', file);
+      
+          // Upload file
+          const uploadResponse = await axios.post('http://localhost:5000/single', formData);
+          const fileDirectory = uploadResponse.data.fileDirectory;
+          setDirectory(fileDirectory);
+          console.log('File uploaded successfully:', fileDirectory);
+      
+          // Send a message after successful file upload
+          const sendMessageResponse = await axios.post('http://localhost:5000/api/messages', {
             text,
             from,
             to,
-            });
-            
-            console.log('Message sent:', response.data);
-            alert('Message sent successfully!');
-            
-            // Clear input fields after successful submission if needed
-            setText('');
-            setFrom('');
-            setTo('');
+            fdirect: fileDirectory,
+          });
+      
+          console.log('Message sent:', sendMessageResponse.data);
+          alert('Message sent successfully!');
+      
+          // Clear input fields after successful submission if needed
+          setText('');
+          setFrom('');
+          setTo('');
+          setFile(null);
         } catch (error) {
-            console.error('Error sending message:', error);
-            alert('Failed to send message. Please try again.');
+          console.error('Error handling message and/or uploading file:', error);
+          alert('Failed to handle message and/or upload file. Please try again.');
         }
         }; // End of handleSendMessage()
 
@@ -126,6 +143,13 @@ return (
                         onChange={(e) => setTo(e.target.value)}
                         required
                     />
+                    <label for="img-selector">Stamp</label>
+                    <input 
+                        id="img-selector"
+                        type="file"
+                        name="file"
+                        onChange={(e) => setFile(e.target.files[0])}
+                    />
                     <button type="submit">Send</button>
                 </div>
             </form>
@@ -154,7 +178,10 @@ return (
 
                         <p className="letter-body">{message.text}</p>
 
-                        <p className="letter-closing">From, {message.from}</p>                        
+                        <p className="letter-closing">From, {message.from}</p>
+
+                        <img src={message.fdirect} required></img>
+
 
                         {location.state.id === 'admin@admin' && (
                             <button onClick={() => handleDeleteMessage(message._id)}>Delete</button>

@@ -1,18 +1,20 @@
 // controllers/message-ctrls.js
 const Message = require('../models/message-model');
+const fs = require('fs')
 
 const createMessage = async (req, res) => {
     try {
         // Extract data from the request body
-        const { text, from, to } = req.body;
+        const { text, from, to, fdirect } = req.body;
     
-        console.log('Received message:', { text, from, to });
+        console.log('Received message:', { text, from, to, fdirect});
 
         // Create a new message object using your Message model/schema
         const newMessage = new Message({
             text,
             from,
             to,
+            fdirect,
             createdAt: new Date(),
             // You might want to set other fields like createdAt or expiryDate here
         });
@@ -69,6 +71,15 @@ const deleteOldMessages = async (res) => {
             console.log(`Time of posting: ${message.createdAt}`);
             console.log(`Time of deletion: ${currentTime}`);
 
+            const file = `../public/${message.fdirect}`;
+
+            fs.unlink(file, (err) =>{
+                if(err){
+                    console.error('Error deleting file:', err);
+                } else{
+                    console.log('File deleted successfully');
+                }
+            });
             await message.deleteOne(); // Delete the message
         });
 

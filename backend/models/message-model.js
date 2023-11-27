@@ -15,10 +15,14 @@ const MessageSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
+    fdirect: {
+      type: String,
+    },
     createdAt: {
       type: Date,
       default: Date.now,
     },
+
     // Add more fields as needed for your message schema
 });
 
