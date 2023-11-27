@@ -1,5 +1,5 @@
 // src/App.js
-
+import './App.css'
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Home from "./components/Home"

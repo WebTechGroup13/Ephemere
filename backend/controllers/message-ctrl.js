@@ -4,9 +4,9 @@ const Message = require('../models/message-model');
 const createMessage = async (req, res) => {
     try {
         // Extract data from the request body
-        const { text, from, to } = req.body;
+        const { text, from, to, creator } = req.body;
     
-        console.log('Received message:', { text, from, to });
+        console.log('Received message:', { text, from, to, creator });
 
         // Create a new message object using your Message model/schema
         const newMessage = new Message({
@@ -14,6 +14,7 @@ const createMessage = async (req, res) => {
             from,
             to,
             createdAt: new Date(),
+            createdBy: creator
             // You might want to set other fields like createdAt or expiryDate here
         });
   
@@ -94,6 +95,22 @@ const deleteMessageById = async (req, res) => {
       }
 };
 
+const updateMessageById = async (req, res) => {
+    const { id } = req.params;
+    const { text, from, to } = req.body;
+
+    try {
+        const updatedMessage = await Message.findByIdAndUpdate(id, { text, from, to }, { new: true });
+        if (!updatedMessage) {
+            return res.status(404).json({ message: 'Message not found' });
+        }
+        res.status(200).json({ message: 'Message updated successfully', data: updatedMessage });
+    } catch (error) {
+        res.status(500).json({ message: 'Error updating message', error });
+    }
+};
+
+
 // If needed, stop the interval after some time or when the app shuts down
 // For example, to stop the interval after 7 days
 // setTimeout(() => {
@@ -106,5 +123,6 @@ module.exports = {
     getMessage,
     getAllMessages,
     deleteOldMessages,
-    deleteMessageById
+    deleteMessageById,
+    updateMessageById
 }

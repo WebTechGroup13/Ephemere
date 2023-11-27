@@ -1,0 +1,55 @@
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    width: 40%; /* Adjust as per your design */
+    max-width: 500px; /* Prevents modal from getting too large on wide screens */
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Adds space between form elements */
+}
+
+.modal-content textarea,
+.modal-content input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px; /* Larger font size for better readability */
+}
+
+.modal-content textarea {
+    height: 100px; /* Larger area for text */
+    resize: vertical; /* Allows resizing only vertically */
+}
+
+.modal-content .close {
+    align-self: flex-end;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.modal-content button {
+    padding: 10px 20px;
+    color: black;
+    border: 3px solid #1c1c1c; 
+    background-color: rgb(201, 201, 201);
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition-duration: 0.4s;
+}
+
+.modal-content button:hover {
+    background-color: #344f45; 
+    color: white;
+}

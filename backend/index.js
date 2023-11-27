@@ -12,7 +12,7 @@ const { setupAdmin } = require('./controllers/setup-admin');
 const { User } = require('./models/user-model');
 const { deleteOldMessages} = require('./controllers/message-ctrl');
 
-const cleanUpInterval = '* * * * *'; // Runs every minute (* - minute(0-59) * - Hour(0-23) * - Day(1-31) * - Month(1-12) * -Day of the week 0-7 (sunday = 0) * - Year (optional))
+const cleanUpInterval = '*/10 * * * *'; // Runs every minute (* - minute(0-59) * - Hour(0-23) * - Day(1-31) * - Month(1-12) * -Day of the week 0-7 (sunday = 0) * - Year (optional))
 
 app.use(express.json()); // Parse JSON payloads
 app.use(express.urlencoded({ extended: true }))
