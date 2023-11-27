@@ -19,6 +19,10 @@ const MessageSchema = new mongoose.Schema({
       type: Date,
       default: Date.now,
     },
+    createdBy: {
+      type: String,
+      required: true
+    }
     // Add more fields as needed for your message schema
 });
 

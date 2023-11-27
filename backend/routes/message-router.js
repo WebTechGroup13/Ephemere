@@ -8,5 +8,6 @@ router.get('/api/messages/:id', MessageCtrl.getMessage);
 router.get('/api/messages', MessageCtrl.getAllMessages); // Add this route to fetch all messages
 router.get('api/messages/deleted-messages', MessageCtrl.deleteOldMessages);
 router.delete('/:id', MessageCtrl.deleteMessageById);
+router.put('/api/messages/:id', MessageCtrl.updateMessageById);
 
 module.exports = router;

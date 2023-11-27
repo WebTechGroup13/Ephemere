@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {useLocation, useNavigate} from 'react-router-dom';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Letter from './Letter.js';
+import EditModal from './EditModal';
 
 function Home (){
     const location=useLocation()
@@ -13,7 +15,8 @@ function Home (){
     const [to, setTo] = useState("");
     const [searchQuery, setSearchQuery] = useState("");
     const [messages, setMessages] = useState([]);
-    
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [selectedLetter, setSelectedLetter] = useState(null);
     
     // Send a message
     const handleSendMessage = async (e) => {
@@ -24,6 +27,7 @@ function Home (){
             text,
             from,
             to,
+            "creator":location.state.id,
             });
             
             console.log('Message sent:', response.data);
@@ -55,8 +59,9 @@ function Home (){
 
     useEffect(() => {
         const interval = setInterval(() =>{
+            console.log("location.state.id =====>", location.state.id);
             fetchMessages();
-        }, 5000); //Fetch messages every 10 seconds
+        }, 5000); //Fetch messages every 5 seconds
 
         // return () => clearInterval(interval);
     },[]); // The empty dependency array ensures that this effect runs only once, similar to componentDidMount
@@ -89,7 +94,28 @@ function Home (){
         );
       });
 
-    
+    const handleEditMessage = (letter) => {
+        console.log("Editing letter:", letter);
+        setSelectedLetter(letter);
+        setShowEditModal(true);
+      };
+      
+      const handleCloseModal = () => {
+        setShowEditModal(false);
+        setSelectedLetter(null);
+      };
+      
+      const handleSaveChanges = (letterId, updatedData) => {
+        // Update local state with the updated message data
+        setMessages(messages.map(message => {
+          if (message._id === letterId) {
+            return { ...message, ...updatedData };
+          }
+          return message;
+        }));
+        handleCloseModal();
+      };
+      
 
 return (
     <div className="homepage">
@@ -129,6 +155,18 @@ return (
                     <button type="submit">Send</button>
                 </div>
             </form>
+
+            {showEditModal && selectedLetter && (
+            <>
+                <div className="modal-backdrop" onClick={handleCloseModal}></div>
+                <EditModal
+                letter={selectedLetter}
+                onClose={handleCloseModal}
+                onSave={handleSaveChanges}
+                />
+            </>
+            )}
+
     
             <hr></hr>
 
@@ -143,25 +181,17 @@ return (
 
         
         <div className='letters-container'>
-            {/** Display Messages */}
-            <div className="letters-section">
-                
-                {filteredMessages.map((message, index) => (
-                        
-                    <div className="letter" key={index}>
-
-                        <p className="letter-opening">Dear, {message.to}</p>
-
-                        <p className="letter-body">{message.text}</p>
-
-                        <p className="letter-closing">From, {message.from}</p>                        
-
-                        {location.state.id === 'admin@admin' && (
-                            <button onClick={() => handleDeleteMessage(message._id)}>Delete</button>
-                        )}
-                     </div>
-                ))}
-                
+            <div className="letters-section"> 
+            {filteredMessages.map((letter, index) => (
+                <Letter
+                key={index}
+                letter={letter}
+                onDelete={handleDeleteMessage}
+                onEdit={handleEditMessage}
+                isAdmin={location.state.id === 'admin@admin'}
+                isCreator={letter.createdBy === location.state.id}
+                />
+            ))}
             </div>
         </div>
     </div>
