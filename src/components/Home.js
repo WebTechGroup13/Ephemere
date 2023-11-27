@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {useLocation, useNavigate} from 'react-router-dom';
+import '../Home.css'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Letter from './Letter.js';
 import EditModal from './EditModal';
@@ -13,33 +14,49 @@ function Home (){
     const [text, setText] = useState("");
     const [from, setFrom] = useState("");
     const [to, setTo] = useState("");
+    const [file, setFile] = useState()
+    const [fdirect, setDirectory] = useState('')
+
     const [searchQuery, setSearchQuery] = useState("");
     const [messages, setMessages] = useState([]);
     const [showEditModal, setShowEditModal] = useState(false);
     const [selectedLetter, setSelectedLetter] = useState(null);
     
-    // Send a message
+
+
     const handleSendMessage = async (e) => {
         e.preventDefault();
-    
+
         try {
-            const response = await axios.post('http://localhost:5000/api/messages', {
+          const formData = new FormData();
+          formData.append('file', file);
+      
+          // Upload file
+          const uploadResponse = await axios.post('http://localhost:5000/single', formData);
+          const fileDirectory = uploadResponse.data.fileDirectory;
+          setDirectory(fileDirectory);
+          console.log('File uploaded successfully:', fileDirectory);
+      
+          // Send a message after successful file upload
+          const sendMessageResponse = await axios.post('http://localhost:5000/api/messages', {
             text,
             from,
             to,
             "creator":location.state.id,
-            });
-            
-            console.log('Message sent:', response.data);
-            alert('Message sent successfully!');
-            
-            // Clear input fields after successful submission if needed
-            setText('');
-            setFrom('');
-            setTo('');
+            fdirect: fileDirectory,
+          });
+      
+          console.log('Message sent:', sendMessageResponse.data);
+          alert('Message sent successfully!');
+      
+          // Clear input fields after successful submission if needed
+          setText('');
+          setFrom('');
+          setTo('');
+          setFile(null);
         } catch (error) {
-            console.error('Error sending message:', error);
-            alert('Failed to send message. Please try again.');
+          console.error('Error handling message and/or uploading file:', error);
+          alert('Failed to handle message and/or upload file. Please try again.');
         }
         }; // End of handleSendMessage()
 
@@ -152,6 +169,13 @@ return (
                         onChange={(e) => setTo(e.target.value)}
                         required
                     />
+                    <label for="img-selector">Stamp</label>
+                    <input 
+                        id="img-selector"
+                        type="file"
+                        name="file"
+                        onChange={(e) => setFile(e.target.files[0])}
+                    />
                     <button type="submit">Send</button>
                 </div>
             </form>
@@ -197,5 +221,6 @@ return (
     </div>
 )
 }
+
 
 export default Home;

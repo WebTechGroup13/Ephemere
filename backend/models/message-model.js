@@ -15,6 +15,9 @@ const MessageSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
+    fdirect: {
+      type: String,
+    },
     createdAt: {
       type: Date,
       default: Date.now,
