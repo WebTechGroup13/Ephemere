@@ -7,6 +7,8 @@ function Letter({ letter, onDelete, onEdit, isAdmin, isCreator }) {
       <p className="letter-opening">Dear, {letter.to}</p>
       <p className="letter-body">{letter.text}</p>
       <p className="letter-closing">From, {letter.from}</p>
+      <img src={letter.fdirect} required></img>'
+
       </div>
       {isAdmin && (
         <button onClick={() => onDelete(letter._id)}>Delete</button>
