@@ -24,11 +24,15 @@
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 16px; /* Larger font size for better readability */
+    border: 1px solid#1c1c1c; 
+
+    
 }
 
 .modal-content textarea {
     height: 100px; /* Larger area for text */
     resize: vertical; /* Allows resizing only vertically */
+    border: 2px solid#1c1c1c; 
 }
 
 .modal-content .close {

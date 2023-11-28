@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {useLocation, useNavigate} from 'react-router-dom';
-import '../Home.css'
+import '../styles/Home.css'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Letter from './Letter.js';
 import EditModal from './EditModal';
