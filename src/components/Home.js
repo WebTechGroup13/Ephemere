@@ -28,26 +28,40 @@ function Home (){
         e.preventDefault();
 
         try {
-          const formData = new FormData();
-          formData.append('file', file);
-      
-          // Upload file
-          const uploadResponse = await axios.post('http://localhost:5000/single', formData);
-          const fileDirectory = uploadResponse.data.fileDirectory;
-          setDirectory(fileDirectory);
-          console.log('File uploaded successfully:', fileDirectory);
-      
-          // Send a message after successful file upload
-          const sendMessageResponse = await axios.post('http://localhost:5000/api/messages', {
-            text,
-            from,
-            to,
-            "creator":location.state.id,
-            fdirect: fileDirectory,
-          });
-      
-          console.log('Message sent:', sendMessageResponse.data);
-          alert('Message sent successfully!');
+            if (file){
+                const formData = new FormData();
+                formData.append('file', file);
+            
+                // Upload file
+                const uploadResponse = await axios.post('http://localhost:5000/single', formData);
+                const fileDirectory = uploadResponse.data.fileDirectory;
+                setDirectory(fileDirectory);
+                console.log('File uploaded successfully:', fileDirectory);
+
+                          // Send a message after successful file upload
+                const sendMessageResponse = await axios.post('http://localhost:5000/api/messages', {
+                    text,
+                    from,
+                    to,
+                    "creator":location.state.id,
+                    fdirect: fileDirectory,
+                    
+                });
+
+                console.log('Message sent:', sendMessageResponse.data);
+                alert('Message sent successfully!');
+            } else {
+                // Send a message after successful file upload
+                const sendMessageResponse = await axios.post('http://localhost:5000/api/messages', {
+                  text,
+                  from,
+                  to,
+                  "creator":location.state.id,
+                });
+
+                console.log('Message sent:', sendMessageResponse.data);
+                alert('Message sent successfully!');
+            }
       
           // Clear input fields after successful submission if needed
           setText('');
