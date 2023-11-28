@@ -183,7 +183,7 @@ return (
                         onChange={(e) => setTo(e.target.value)}
                         required
                     />
-                    <label for="img-selector">Stamp</label>
+                    <label htmlFor="img-selector">Stamp</label>
                     <input 
                         id="img-selector"
                         type="file"
