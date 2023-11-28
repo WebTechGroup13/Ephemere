@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from "react"
 import axios from "axios"
 import { useNavigate, Link } from "react-router-dom"
+import '../styles/LoginSignup.css'
+
 
 
 function Signup() {
@@ -47,20 +49,14 @@ function Signup() {
     return (
         <div className="login">
 
-            <h1>Signup</h1>
+            <h1>Create An Account</h1>
 
             <form action="POST">
-                <input type="email" onChange={(e) => { setEmail(e.target.value) }} placeholder="email"  />
-                <input type="password" onChange={(e) => { setPassword(e.target.value) }} placeholder="Password" />
-                <input type="submit" onClick={submit} />
-
+                <input type="email" onChange={(e) => { setEmail(e.target.value) }} placeholder="Email:"  /><br></br>
+                <input type="password" onChange={(e) => { setPassword(e.target.value) }} placeholder="Password:" /><br></br>
+                <button onClick={submit}>Sign Up</button><br></br>
             </form>
-
-            <br />
-            <p>OR</p>
-            <br />
-
-            <Link to="/">Login Page</Link>
+            <Link to="/">Back to Login Page</Link>
 
         </div>
     )

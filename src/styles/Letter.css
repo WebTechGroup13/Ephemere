@@ -1,0 +1,55 @@
+.letters-container {
+  display: flex;
+  justify-content: center;
+  background-color: #1c1c1c;
+  margin: auto;
+  border-radius: 2px;
+  width: 470px;
+}
+
+.letters-section img {
+  width: 100px;
+  display: block;
+  float: right;
+  margin-right: 16px;
+  border: 2px solid #434343;
+  border-radius: 5px;
+}
+
+.letters-section h2 {
+  font-size: 30px;
+  font-weight: 400;
+  color: white;
+}
+
+.letters-section .letter {
+  border-top: 30px solid #ffffff;
+  border-bottom: 10px solid #ffffff;
+  background-color: #fff;
+  background-image: linear-gradient(#d5d5d5 0.1em, transparent 0.1em);
+  background-size: 95% 1.2em;
+  margin-bottom: 30px;
+  font-family: monospace;
+}
+
+.letters-section .letter .letter-opening {
+  margin: 0;
+  margin-top: 2px;
+  text-align: left;
+  margin-left: 20px;
+}
+
+.letters-section .letter .letter-body {
+  width: 400px;
+  height: 100px;
+  margin: 20px;
+  text-align: left;
+  overflow-wrap: break-word;
+}
+
+.letters-section .letter .letter-closing {
+  text-align: right;
+  margin: 0;
+  margin-right: 25px;
+  margin-bottom: px;
+}

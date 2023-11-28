@@ -31,13 +31,14 @@ function EditModal({ letter, onClose, onSave }) {
 
         <textarea
           value={editedText}
+          placeholder='Edit Letter.'
           onChange={(e) => setEditedText(e.target.value)}
         />
 
         <div className="input-group">
-          <label htmlFor="from">From:</label>
           <input
             id="from"
+            placeholder='From:'
             type="text"
             value={editedFrom}
             onChange={(e) => setEditedFrom(e.target.value)}
@@ -45,9 +46,9 @@ function EditModal({ letter, onClose, onSave }) {
         </div>
 
         <div className="input-group">
-          <label htmlFor="to">To:</label>
           <input
             id="to"
+            placeholder='To:'
             type="text"
             value={editedTo}
             onChange={(e) => setEditedTo(e.target.value)}
