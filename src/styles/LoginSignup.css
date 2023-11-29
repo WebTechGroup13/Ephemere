@@ -15,8 +15,28 @@
     padding-top: 1px;
     padding-bottom: 2px;
 
-
   }
+
+.loginlogo{
+    display: block;
+    margin: auto;
+    width: 300px;
+    padding: 0px;
+}
+
+.loginbox{
+  margin: auto;
+  max-width: 300px;
+  max-height: 300px;
+  border: 1px solid #111;
+  box-shadow: 0 16px 32px 0 rgba(0, 0, 0, 0.08);
+  border-radius: 24px;
+  background-color:#fefcfd;
+}
+
+.loginbox form {
+  margin-bottom: 10px;
+}
 
 .login a{
     margin: 5px;

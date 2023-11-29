@@ -47,17 +47,19 @@ function Login() {
 
     return (
         <div className="login">
+            {/* Image for landing page */}
+            <img className="loginlogo" src="ephemere.svg" alt="Ephemere Logo"></img>
+            <div className="loginbox">
+                <h1>Login</h1>
 
-            <h1>Login</h1>
-
-            <form action="POST">
-                <input type="email" onChange={(e) => { setEmail(e.target.value) }} placeholder="Email:"  /><br></br>
-                <input type="password" onChange={(e) => { setPassword(e.target.value) }} placeholder="Password:"  /><br></br>
-                <button onClick={submit}>Login</button><br></br>
-                <Link to="">Change Password?</Link>
-                <Link ClassName to="/signup">Create An Account</Link>
-            </form>
-
+                <form action="POST">
+                    <input type="email" onChange={(e) => { setEmail(e.target.value) }} placeholder="Email:"  /><br></br>
+                    <input type="password" onChange={(e) => { setPassword(e.target.value) }} placeholder="Password:"  /><br></br>
+                    <button onClick={submit}>Login</button><br></br>
+                    <Link to="">Change Password?</Link>
+                    <Link ClassName to="/signup">Create An Account</Link>
+                </form>
+            </div>
         </div>
     )
 }

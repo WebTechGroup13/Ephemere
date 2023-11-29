@@ -1,6 +1,6 @@
 // src/App.js
 import './App.css';
-import './styles/DarkMode.css'; // Correct the import path if necessary
+import './styles/DarkMode.css';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Home from './components/Home';
