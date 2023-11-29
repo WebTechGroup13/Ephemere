@@ -7,6 +7,7 @@ import '../styles/Home.css'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Letter from './Letter.js';
 import EditModal from './EditModal';
+import SettingsModal from './SettingsModal.js';
 
 function Home (){
     const location=useLocation()
@@ -19,9 +20,14 @@ function Home (){
 
     const [searchQuery, setSearchQuery] = useState("");
     const [messages, setMessages] = useState([]);
+    const [user, setUser] = useState([]);
+
     const [showEditModal, setShowEditModal] = useState(false);
     const [selectedLetter, setSelectedLetter] = useState(null);
-    
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [showSettingsModal, setShowSettingsModal] = useState(false);
+
+
 
 
     const handleSendMessage = async (e) => {
@@ -75,9 +81,10 @@ function Home (){
         }; // End of handleSendMessage()
 
     // Display all messages
+
     const fetchMessages = async () => {
         try {
-            console.log('Fetching messages...'); // Log before fetching messages
+            console.log('Fetching User...'); // Log before fetching messages
             const response = await axios.get('http://localhost:5000/api/messages');
             console.log('Messages fetched:', response.data); // Log fetched messages
             setMessages(response.data);
@@ -87,6 +94,8 @@ function Home (){
         console.error('Error fetching messages:', error);
         }
     }; // end of fetchMessages()
+
+
 
     useEffect(() => {
         const interval = setInterval(() =>{
@@ -116,6 +125,8 @@ function Home (){
         
     }; // end of handleDeleteMessage
 
+    
+
     const filteredMessages = messages.filter((message) => {
         const searchText = searchQuery.toLowerCase();
         return (
@@ -133,8 +144,15 @@ function Home (){
       
       const handleCloseModal = () => {
         setShowEditModal(false);
+        setShowSettingsModal(false)
         setSelectedLetter(null);
       };
+
+      const handleEditPassword = () => {
+        console.log("Opening Modal");
+        setShowSettingsModal(true);
+      };
+
       
       const handleSaveChanges = (letterId, updatedData) => {
         // Update local state with the updated message data
@@ -152,7 +170,11 @@ return (
     <div className="homepage">
 
         <a>{location.state.id} </a>
-        
+
+
+
+        <button onClick={handleEditPassword}>SETTINGS</button>
+
             {/* Image for landing page */}
             <img className="logo" src="ephemere.svg" alt="Ephemere Logo"></img>
             {/* Sending messages */}
@@ -205,6 +227,16 @@ return (
             </>
             )}
 
+            {showSettingsModal && (
+            <>
+                <div className="modal-backdrop" onClick={handleCloseModal}></div>
+                <SettingsModal
+                user={location.state.id}
+                onClose={handleCloseModal}
+                />
+            </>
+            )}
+
     
             <hr></hr>
 
@@ -216,6 +248,7 @@ return (
             onChange={(e) => setSearchQuery(e.target.value)}
             />
 
+        
 
         
         <div className='letters-container'>
