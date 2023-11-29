@@ -12,7 +12,7 @@ function Letter({ letter, onDelete, onEdit, isAdmin, isCreator }) {
       
 
       </div>
-      {isAdmin && (
+      {(isAdmin || isCreator) && (
         <button onClick={() => onDelete(letter._id)}>Delete</button>
       )}
       {isCreator && (
