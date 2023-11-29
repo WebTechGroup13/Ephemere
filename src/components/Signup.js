@@ -57,7 +57,6 @@ function Signup() {
                 <button onClick={submit}>Sign Up</button><br></br>
             </form>
             <Link to="/">Back to Login Page</Link>
-
         </div>
     )
 }

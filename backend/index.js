@@ -38,6 +38,7 @@ const storageEngine = multer.diskStorage({
   });
 
 app.use('/user', userRouter);
+
 app.use('/', messageRouter);
 app.use('/api/messages', messageRouter);
 
@@ -58,6 +59,29 @@ app.post("/single", upload.single("file"), (req, res) => {
     } else {
       res.status(400).send("Please upload a valid image");
     }
+  });
+
+  app.post("/password", async (req, res) => {
+  const { email, password} = req.body;
+
+  try {
+
+    const user = await User.findOne({ email });
+
+    if (user) {
+      user.password = password;
+
+      await user.save();
+
+      return res.status(200).json({ message: 'Password changed successfully' });
+    } else {
+      return res.status(404).json({ message: 'User not found' });
+    }
+  } catch (error) {
+    console.error('Error changing password:', error);
+    return res.status(500).json({ message: 'Something went wrong' });
+  }
+
   });
 
 app.post("/login", async ( req, res) =>{
