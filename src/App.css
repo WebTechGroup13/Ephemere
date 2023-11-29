@@ -87,7 +87,6 @@
 .logo{
   display: block;
   margin: auto;
-  filter: invert(90%);
   width: 300px;
   padding: 10px;
 }

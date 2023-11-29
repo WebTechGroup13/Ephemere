@@ -6,7 +6,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  background-color: rgb(57, 53, 53);
+  background-color: #f3f3f5;
+  color: #28262C;
   zoom: 175%
  
 }

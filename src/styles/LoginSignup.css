@@ -1,7 +1,7 @@
 .login button {
     padding-inline: 10px;
     color: black;
-    border: 3px solid #1c1c1c;
+    border: 2cqmin solid #1c1c1c;
     border-radius: 5px;
     transition-duration: 0.4s;
     margin: 5px;
@@ -20,7 +20,8 @@
 
 .login a{
     margin: 5px;
-    color: white;
+    color: #28262C;
+    font-size: 10px;
 }
 .login a:hover{
     margin: 5px;
@@ -36,10 +37,10 @@
     max-width: 1000px;
     padding: 10px 3px;
     box-sizing: border-box;
-    border: 2px solid #ccc;
+    border: 2px solid #28262C;
     border-radius: 2px;
     color: white;
-    background-color: #2c2c2c;
+    background-color: rgb(232, 240, 254);
     font-size: 16px;
     resize: none;
   }
@@ -47,19 +48,21 @@
   .login h1 {
     font-size: 30px;
     font-weight: 400;
-    color: white;
+    color: #1c1c1c;
+    text-shadow: 1px 1px 1px #000000;
   }
 
   .login button{
-    background-color: rgb(201, 201, 201);
+    background-color: #fefcfd;
     padding-inline: 10px;
     color: black;
-    border: 3px solid #1c1c1c;
+    border: 2px solid #1c1c1c;
     border-radius: 5px;
     transition-duration: 0.4s;
   }
   
   .login button:hover{
-    background-color: #344f45;
+    background-color: #3f3f3f;
     color: white;
+    border: 1px solid #1c1c1c;
   }
