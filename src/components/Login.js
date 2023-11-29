@@ -57,7 +57,7 @@ function Login() {
                     <input type="password" onChange={(e) => { setPassword(e.target.value) }} placeholder="Password:"  /><br></br>
                     <button onClick={submit}>Login</button><br></br>
                     <Link to="">Change Password?</Link>
-                    <Link ClassName to="/signup">Create An Account</Link>
+                    <Link to="/signup">Create An Account</Link>
                 </form>
             </div>
         </div>
