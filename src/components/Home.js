@@ -125,6 +125,39 @@ function Home (){
         
     }; // end of handleDeleteMessage
 
+    // client handling of the like/unlike of letters
+    const handleLike = async (messageId) => {
+        try {
+            const userObjectId = location.state.id;
+            const message = messages.find(msg => msg._id === messageId);
+    
+            if (message.likes.includes(userObjectId)) {
+                // User has already liked the message, perform unlike action
+                console.log('USER ID SENT:', userObjectId);
+                await axios.post(`http://localhost:5000/api/messages/${messageId}/unlike`, { userId: userObjectId });
+                // Update the state to reflect the unlike
+                setMessages(messages.map(msg => {
+                    if (msg._id === messageId) {
+                        return { ...msg, likes: msg.likes.filter(id => id !== userObjectId) };
+                    }
+                    return msg;
+                }));
+            } else {
+                // User hasn't liked the message, perform like action
+                await axios.post(`http://localhost:5000/api/messages/${messageId}/like`, { userId: userObjectId });
+                
+                // Update the state to reflect the new like
+                setMessages(messages.map(msg => {
+                    if (msg._id === messageId) {
+                        return { ...msg, likes: [...msg.likes, userObjectId] };
+                    }
+                    return msg;
+                }));
+            }
+        } catch (error) {
+            console.error('Error liking/unliking message:', error);
+        }
+    };
     
 
     const filteredMessages = messages.filter((message) => {
@@ -259,6 +292,7 @@ return (
                 letter={letter}
                 onDelete={handleDeleteMessage}
                 onEdit={handleEditMessage}
+                onLike={handleLike}
                 isAdmin={location.state.id === 'admin@admin'}
                 isCreator={letter.createdBy === location.state.id}
                 />

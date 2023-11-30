@@ -42,7 +42,8 @@
 .letters-section .letter .letter-body {
   width: 400px;
   height: 100px;
-  margin: 20px;
+  margin-top: 16px;
+  margin-left: 20px;
   text-align: left;
   overflow-wrap: break-word;
 }
@@ -51,5 +52,29 @@
   text-align: right;
   margin: 0;
   margin-right: 25px;
+  padding-top: 5px;
   margin-bottom: px;
+}
+
+.letter-actions {
+  text-align: left;
+  padding-left: 5px;
+}
+
+.like-button {
+  background: none;
+  border: none;
+  color: red; /* Change the color to whatever you like */
+  font-size: 18px; /* Adjust the size as needed */
+  cursor: pointer;
+  padding: 0; /* Adjust padding as needed */
+}
+
+.like-count {
+  margin-left: 6px; /* Spacing between the heart icon and the count */
+}
+
+.delete-button,
+.edit-button {
+  /* Style your delete and edit buttons here */
 }

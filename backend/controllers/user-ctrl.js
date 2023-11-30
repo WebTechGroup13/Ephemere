@@ -42,10 +42,15 @@ const loginUser = async (req, res) => {
     const user = await User.findOne({ email, password });
 
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+        return res.status(404).json({ message: 'User not found' });
     }
 
-    res.status(200).json({ message: 'Login successful', user });
+    // Send the user's ObjectId in the response
+    res.status(200).json({ 
+        message: 'Login successful', 
+        userId: user._id,  // Send the ObjectId
+    });
+    
   } catch (error) {
     console.error('Error logging in:', error);
     res.status(500).json({ message: 'Something went wrong' });
