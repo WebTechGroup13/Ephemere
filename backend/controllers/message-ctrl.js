@@ -35,7 +35,6 @@ const getMessage = async (req, res) => {
   
     try {
       let message = await Message.findById(messageId).populate('likes', 'email');
-      // .populate('likes', 'email') will replace each ObjectId in the likes array with the user's email
       if (!message) {
         return res.status(404).json({ error: 'Message not found' });
       }

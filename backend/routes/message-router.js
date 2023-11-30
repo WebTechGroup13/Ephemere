@@ -10,7 +10,7 @@ router.get('api/messages/deleted-messages', MessageCtrl.deleteOldMessages);
 router.delete('/:id', MessageCtrl.deleteMessageById);
 router.put('/api/messages/:id', MessageCtrl.updateMessageById);
 router.post('/api/messages/:id/like', MessageCtrl.likeMessage);
-router.post('/api/messages/:id/unlike', MessageCtrl.unlikeMessage); // If you implement unlike
+router.post('/api/messages/:id/unlike', MessageCtrl.unlikeMessage);
 
 
 module.exports = router;

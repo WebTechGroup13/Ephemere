@@ -11,13 +11,13 @@ function Letter({ letter, onDelete, onEdit, onLike, isAdmin, isCreator }) {
   return (
     <>
       <div className="letter">
-        <img src={letter.fdirect} alt="Letter"></img> {/* Removed 'required' attribute since 'img' tag doesn't have it */}
+        <img src={letter.fdirect} alt="Letter"></img> 
         <p className="letter-opening">Dear, {letter.to}</p>
         <p className="letter-body">{letter.text}</p>
         <p className="letter-closing">From, {letter.from}</p>
         <div className="letter-actions">
           <button className="like-button" onClick={handleLike}>
-            ❤️ {/* This is a heart emoji; you can also use an icon from an icon library */}
+            ❤️ 
           </button>
           <span className="like-count">{letter.likes?.length || 0}</span>
         </div>

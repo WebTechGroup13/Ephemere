@@ -64,17 +64,12 @@
 .like-button {
   background: none;
   border: none;
-  color: red; /* Change the color to whatever you like */
-  font-size: 18px; /* Adjust the size as needed */
+  color: red; 
+  font-size: 18px; 
   cursor: pointer;
-  padding: 0; /* Adjust padding as needed */
+  padding: 0; 
 }
 
 .like-count {
   margin-left: 6px; /* Spacing between the heart icon and the count */
-}
-
-.delete-button,
-.edit-button {
-  /* Style your delete and edit buttons here */
 }
