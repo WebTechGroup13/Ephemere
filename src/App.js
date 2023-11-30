@@ -48,7 +48,7 @@ function App() {
 
 
       <div className='App'>
-        <Router>
+        <Router basename="/ephemere">
           <Routes>
             <Route path='/' element={<Login />} />
             <Route path='/signup' element={<Signup />} />
