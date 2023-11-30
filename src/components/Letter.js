@@ -11,7 +11,8 @@ function Letter({ letter, onDelete, onEdit, onLike, isAdmin, isCreator }) {
   return (
     <>
       <div className="letter">
-        <img src={letter.fdirect} alt="Letter"></img> 
+        {/* Only display the img if letter.fdirect has a value */}
+        {letter.fdirect && <img src={letter.fdirect} alt="Letter" />}
         <p className="letter-opening">Dear, {letter.to}</p>
         <p className="letter-body">{letter.text}</p>
         <p className="letter-closing">From, {letter.from}</p>
