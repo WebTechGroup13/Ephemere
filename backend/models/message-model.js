@@ -24,8 +24,12 @@ const MessageSchema = new mongoose.Schema({
     },
     createdBy: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
+    likes: {
+      type: [String],
+      default: [], 
+    },
     // Add more fields as needed for your message schema
 });
 

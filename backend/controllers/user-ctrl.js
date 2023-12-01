@@ -37,10 +37,8 @@ const loginUser = async (req, res) => {
     const user = await User.findOne({ email, password });
     
     if (!user) {
-      return res.status(404).json({ message: 'User not found, is it this?' });
+        return res.status(404).json({ message: 'User not found' });
     }
-    console.log('Entered password:', password);
-    console.log('Hashed password in the database:', user.password);
     // Compare password
     const isMatch = await user.comparePassword(password);
     if (isMatch) {

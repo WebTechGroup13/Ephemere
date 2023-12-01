@@ -2,7 +2,6 @@
 import './App.css';
 import './styles/DarkMode.css';
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import Home from './components/Home';
 import Login from './components/Login';
 import Signup from './components/Signup';
@@ -49,7 +48,7 @@ function App() {
 
 
       <div className='App'>
-        <Router>
+        <Router basename="/ephemere">
           <Routes>
             <Route path='/' element={<Login />} />
             <Route path='/signup' element={<Signup />} />

@@ -16,7 +16,7 @@ const createMessage = async (req, res) => {
             to,
             fdirect,
             createdAt: new Date(),
-            createdBy: creator
+            createdBy: creator 
             // You might want to set other fields like createdAt or expiryDate here
         });
   
@@ -31,24 +31,19 @@ const createMessage = async (req, res) => {
 };
 
 const getMessage = async (req, res) => {
-    const messageId = req.params.id; // Assuming the message ID is passed as a parameter in the URL
-
+    const messageId = req.params.id;
+  
     try {
-        const message = await Message.findById(messageId);
-
-        console.log('Retrieved message:', message);
-
-        if (!message) {
-            return res.status(404).json({ error: 'Message not found' });
-        }
-
-        return res.status(200).json({ message });
-    }   catch (error) {
-            console.error('Error retrieving message:', error);
-            return res.status(500).json({ error: 'Could not retrieve message' });
-        }
-};
-
+      let message = await Message.findById(messageId).populate('likes', 'email');
+      if (!message) {
+        return res.status(404).json({ error: 'Message not found' });
+      }
+      res.status(200).json({ message });
+    } catch (error) {
+      console.error('Error retrieving message:', error);
+      res.status(500).json({ error: 'Could not retrieve message' });
+    }
+  };
 
 // Fetch all messages
 const getAllMessages = async (req, res) => {
@@ -122,6 +117,55 @@ const updateMessageById = async (req, res) => {
 };
 
 
+const likeMessage = async (req, res) => {
+  const messageId = req.params.id;
+  const userIdentifier = req.body.userId; // This should be a unique string like email or username
+
+  try {
+    const message = await Message.findById(messageId);
+    if (!message) {
+      return res.status(404).json({ message: 'Message not found' });
+    }
+
+    // Check if the user has already liked the message
+    if (message.likes.includes(userIdentifier)) {
+      return res.status(400).json({ message: 'User has already liked this message' });
+    }
+
+    message.likes.push(userIdentifier);
+    await message.save();
+
+    res.status(200).json({ message: 'Message liked successfully' });
+  } catch (error) {
+    console.error('Error liking message:', error);
+    res.status(500).json({ error: 'Could not like message' });
+  }
+};
+
+
+const unlikeMessage = async (req, res) => {
+  const messageId = req.params.id;
+  const userIdentifier = req.body.userId; // This should be a unique string like email or username
+
+  try {
+    const message = await Message.findById(messageId);
+    if (!message) {
+      return res.status(404).json({ message: 'Message not found' });
+    }
+
+    if (message.likes.includes(userIdentifier)) {
+      message.likes = message.likes.filter(identifier => identifier !== userIdentifier);
+      await message.save();
+      res.status(200).json({ message: 'Message unliked successfully' });
+    } else {
+      res.status(400).json({ message: 'User has not liked this message' });
+    }
+  } catch (error) {
+    console.error('Error unliking message:', error);
+    res.status(500).json({ error: 'Could not unlike message' });
+  }
+};
+
 // If needed, stop the interval after some time or when the app shuts down
 // For example, to stop the interval after 7 days
 // setTimeout(() => {
@@ -135,5 +179,7 @@ module.exports = {
     getAllMessages,
     deleteOldMessages,
     deleteMessageById,
-    updateMessageById
+    updateMessageById,
+    likeMessage,
+    unlikeMessage
 }
