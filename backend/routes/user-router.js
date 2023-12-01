@@ -1,6 +1,6 @@
 // backend/routes/user-router.js
 const express = require('express');
-const UserCtrl = require('../controllers/user-ctrl');
+// const UserCtrl = require('../controllers/user-ctrl');
 const router = express.Router();
 
 // Route to create a new user
@@ -16,7 +16,7 @@ router.post('/api/user/register', async (req, res) => {
     }
 });
 // Route for user login
-router.post('/api/user/login', UserCtrl.loginUser);
+// router.post('/api/user/login', UserCtrl.loginUser);
 
 
 module.exports = router;

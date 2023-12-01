@@ -5,15 +5,17 @@ const cors = require("cors");
 const cron = require('node-cron');
 const app = express();
 const multer = require("multer");
+const bcrypt = require('bcryptjs');
 const port = process.env.SERVER_PORT || 5000;
 
 //Connect to db
 const db = require('./db/mongo.js');
 const { setupAdmin } = require('./controllers/setup-admin');
+
 const { User } = require('./models/user-model');
 const { deleteOldMessages} = require('./controllers/message-ctrl');
 
-const cleanUpInterval = '*/10 * * * *'; // Runs every minute (* - minute(0-59) * - Hour(0-23) * - Day(1-31) * - Month(1-12) * -Day of the week 0-7 (sunday = 0) * - Year (optional))
+const cleanUpInterval = '* * 1 * *'; // Runs every minute (* - minute(0-59) * - Hour(0-23) * - Day(1-31) * - Month(1-12) * -Day of the week 0-7 (sunday = 0) * - Year (optional))
 
 app.use(express.json()); // Parse JSON payloads
 app.use(express.urlencoded({ extended: true }))
@@ -65,7 +67,6 @@ app.post("/single", upload.single("file"), (req, res) => {
   const { email, password} = req.body;
 
   try {
-
     const user = await User.findOne({ email });
 
     if (user) {
@@ -73,9 +74,9 @@ app.post("/single", upload.single("file"), (req, res) => {
 
       await user.save();
 
-      return res.status(200).json({ message: 'Password changed successfully' });
+      return res.json("success");
     } else {
-      return res.status(404).json({ message: 'User not found' });
+      return res.json("notexist");
     }
   } catch (error) {
     console.error('Error changing password:', error);
@@ -88,36 +89,46 @@ app.post("/login", async ( req, res) =>{
     const{ email, password } = req.body
     // Validate if all necessary fields are present
     if (!email || !password) {
-        return res.status(400).json({ message: 'email and password are required.' });
+      return res.json({ status: "missingEorP" });
     }
-    try{
-        const loginUser = await User.findOne({ email})
-        if(loginUser){
-            console.log('User logged in successfully:', loginUser);
-            res.json("exist")
-        }
-        else{
-            res.json("notexist")
-        }
-    }
-    catch(e){
-        // res.json("fail")
+
+    try {
+      const user = await User.findOne({ email });
+      if (!user) {
+        // User not found
+        return res.json({ status: "notexist" });
+      }
+
+      const isPasswordMatch = await user.comparePassword(password);
+
+      if (isPasswordMatch) {
+        // Passwords match
+        console.log("User logged in:", user);
+        res.json({
+          status: "exist",
+          role: user.role
+        });
+      } else {
+        // Passwords don't match
+        res.json({ status: "incorrectPass" });
+      }
+    } catch(e){
         console.error('Error in login:', e);
         return res.status(500).json({ message: 'Internal server error on Login' });
     }
-})
+});
 
 app.post("/signup",async(req,res)=>{
     const{email,password}=req.body
-
     // Validate if all necessary fields are present
     if (!email || !password) {
-        return res.status(400).json({ message: 'email and password are required.' });
+        return res.json("missingEorP"); //return missing Email or Password
     }
     try{
-        const existingUser = await User.findOne({email})
-        if(existingUser){
-            return res.json("exist");       
+        const user = await User.findOne({ email });
+        if (user) {
+          // User already exists
+          res.json("exist")
         }
         else{
             const newUser = new User({ email, password, role: 'user' });
@@ -133,8 +144,50 @@ app.post("/signup",async(req,res)=>{
     }
 })
 
-// Initialize admin setup during server startup
-setupAdmin();
+// Assuming this is your backend route setup
+
+// Endpoint to get user details by email
+app.get('/userByEmail/:email', async (req, res) => {
+  const userEmail = req.params.email;
+
+  try {
+      const user = await User.findOne({ email: userEmail });
+
+      if (!user) {
+          return res.status(404).json({ message: 'User not found' });
+      }
+
+      res.status(200).json(user);
+  } catch (error) {
+      console.error('Error fetching user by email:', error);
+      res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
+app.delete("/deleteUser/:id", async (req, res) => {
+  const id = req.params.id;
+  // const email = req.body;
+  console.log("id:", id);
+  // console.log("email:", email);
+
+  try {
+    // Find the user by ID
+    const user = await User.findById(id);
+    console.log("User to be deleted:", user);
+    if (!user) {
+      return res.json({ status: "notexist" });
+    }
+
+    // If the conditions are met, proceed to delete the user
+    await User.findByIdAndDelete(user._id);
+    // await user.remove();
+    return res.json({ status: "success" });
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    return res.json({ status: "ErrorDeletingUser" });
+  }
+});
 
 // Schedule a task to run deleteOldMessages every minute (for demonstration purposes)
 cron.schedule(cleanUpInterval, async () => {

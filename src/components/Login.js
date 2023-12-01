@@ -1,6 +1,6 @@
 // /src/components/Login.js
-
-import React, { useEffect, useState } from "react"
+//import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import axios from "axios"
 import { useNavigate, Link } from "react-router-dom"
 import '../styles/LoginSignup.css'
@@ -22,11 +22,22 @@ function Login() {
                 email,password
             })
             .then(res=>{
-                if(res.data==="exist"){
-                    alert("Login successful!"); // Set the success message
-                    history("/home",{state:{id:email}}) //Redirect to the home page after success
-                }
-                else if(res.data==="notexist"){
+                const data = res.data;
+                if(data.status==="exist"){
+                    const role = data.role;
+                    if(role==="user"){
+                        alert("User Login successful!"); // Set the success message
+                        history("/home",{state:{id:email}}) //Redirect to the user page after success
+                    }
+                    else if(role==="admin"){
+                        alert("Admin Login successful!"); // Set the success message
+                        history("/home",{state:{id:email}}) //Redirect to the admin page after success
+                    }
+                } else if(data.status==="missingEorP"){
+                    alert("email and password are required");
+                } else if(data.status==="incorrectPass"){
+                    alert("Incorrect password, please try again.");
+                } else if(data.status==="notexist"){
                     alert("No email associated or incorrect login plaese try again or register.");
                 }
             })
@@ -57,7 +68,7 @@ function Login() {
                     <input type="password" onChange={(e) => { setPassword(e.target.value) }} placeholder="Password:"  /><br></br>
                     <button onClick={submit}>Login</button><br></br>
                     <Link to="">Change Password?</Link>
-                    <Link ClassName to="/signup">Create An Account</Link>
+                    <Link className to="/signup">Create An Account</Link>
                 </form>
             </div>
         </div>
