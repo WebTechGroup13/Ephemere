@@ -1,3 +1,19 @@
+# Introducing the Ephemeral Message Board
+an online platform where users can anonymously share messages visible to the public for a limited time. Inspired by platforms like 'This Website Will Self Destruct', our goal is to provide a space for people to express thoughts, ideas, or messages without the permanence and traceability of traditional social media. Messages automatically vanish after a set time, offering a distinct and fleeting interaction experience.
+
+# Features:
+- Anonymous Posting: Users can post messages without having to register or
+provide any personal information.
+- Time-Limited Visibility: Each message will have a countdown timer, and once the
+time runs out, the message will automatically be deleted from the platform.
+- Randomized Feed: Messages will appear in a randomized order to each visitor,
+ensuring that every user experience is unique.
+Tech Stack:
+- Frontend: ReactJS for building the user interface.
+- Backend: Node.js with Express.js for handling server-side logic.
+- Database: MongoDB for storing message data and other relevant information.
+- Hosting: Vultr
+
 ## Starting the front end
 
 In the project directory, you can run:
